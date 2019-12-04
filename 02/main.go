@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-func calculateFuel(moduleMass float64) (fuelRequirement int, err error) {
-	d := moduleMass / float64(3)
+func calculateFuel(moduleMass int) (fuelRequirement int, err error) {
+	d := moduleMass / 3
 	s := int(d) - 2
 	return s, nil
 }
@@ -16,25 +16,24 @@ func calculateFuel(moduleMass float64) (fuelRequirement int, err error) {
 func calculateFuelsFuel(fuel int) (totalFuel int) {
 	d := fuel / 3
 	s := d - 2
-	// fmt.Println(s)
 	if s <= 0 {
 		return totalFuel
 	}
 	return s + calculateFuelsFuel(s)
 }
 
-func readModules() (modules []float64, err error) {
+func readModules() (modules []int, err error) {
 	file, err := os.Open("modules.txt")
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	s := []float64{}
+	s := []int{}
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		if module, err := strconv.ParseFloat(scanner.Text(), 64); err == nil {
+		if module, err := strconv.Atoi(scanner.Text()); err == nil {
 			s = append(s, module)
 		} else {
 			return nil, err
